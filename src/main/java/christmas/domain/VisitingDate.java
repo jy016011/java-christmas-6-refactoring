@@ -3,6 +3,7 @@ package christmas.domain;
 import christmas.domain.constraint.DateConstraint;
 import christmas.utils.ArgumentValidator;
 import java.time.LocalDate;
+import java.util.List;
 
 public class VisitingDate {
     private static final int PROMOTION_YEAR = DateConstraint.PROMOTION_YEAR.getValue();
@@ -14,6 +15,14 @@ public class VisitingDate {
     public VisitingDate(int day) {
         validate(day);
         visitDay = LocalDate.of(PROMOTION_YEAR, PROMOTION_MONTH, day);
+    }
+
+    public boolean isContainedIn(LocalDate startDayInclusive, LocalDate lastDayInclusive) {
+        return !(visitDay.isBefore(startDayInclusive) || visitDay.isAfter(lastDayInclusive));
+    }
+
+    public boolean isContainedIn(List<LocalDate> days) {
+        return days.contains(visitDay);
     }
 
     private void validate(int day) {

@@ -6,6 +6,7 @@ import static christmas.domain.constraint.DateConstraint.DAY_OF_START;
 import static christmas.domain.constraint.DateConstraint.PROMOTION_MONTH;
 import static christmas.domain.constraint.DateConstraint.PROMOTION_YEAR;
 
+import christmas.domain.VisitingDate;
 import java.time.LocalDate;
 
 public enum PromotionPeriod implements PromotionDate {
@@ -26,8 +27,8 @@ public enum PromotionPeriod implements PromotionDate {
         this.lastDateInclusive = lastDateInclusive;
     }
 
-//    @Override
-//    public boolean contains(VisitingDate visitingDate) {
-//        return visitingDate.isContainedIn(startDateInclusive, lastDateInclusive);
-//    }
+    @Override
+    public boolean contains(VisitingDate visitingDate) {
+        return visitingDate.isContainedIn(startDateInclusive, lastDateInclusive);
+    }
 }

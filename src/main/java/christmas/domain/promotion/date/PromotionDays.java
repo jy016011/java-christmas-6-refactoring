@@ -3,6 +3,7 @@ package christmas.domain.promotion.date;
 import static christmas.domain.constraint.DateConstraint.PROMOTION_MONTH;
 import static christmas.domain.constraint.DateConstraint.PROMOTION_YEAR;
 
+import christmas.domain.VisitingDate;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,8 +25,8 @@ public enum PromotionDays implements PromotionDate {
         this.days = days;
     }
 
-//    @Override
-//    public boolean contains(VisitingDate visitingDate) {
-//        return visitingDate.isContainedIn(days);
-//    }
+    @Override
+    public boolean contains(VisitingDate visitingDate) {
+        return visitingDate.isContainedIn(days);
+    }
 }
