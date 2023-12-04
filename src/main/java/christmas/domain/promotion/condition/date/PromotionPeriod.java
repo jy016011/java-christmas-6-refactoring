@@ -1,4 +1,4 @@
-package christmas.domain.promotion.date;
+package christmas.domain.promotion.condition.date;
 
 import static christmas.domain.constraint.DateConstraint.CHRISTMAS;
 import static christmas.domain.constraint.DateConstraint.DAY_OF_LAST;

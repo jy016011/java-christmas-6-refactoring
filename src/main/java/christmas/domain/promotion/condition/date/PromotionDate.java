@@ -1,4 +1,4 @@
-package christmas.domain.promotion.date;
+package christmas.domain.promotion.condition.date;
 
 import christmas.domain.VisitingDate;
 

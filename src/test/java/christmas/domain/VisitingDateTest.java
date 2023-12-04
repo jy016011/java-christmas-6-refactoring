@@ -3,8 +3,8 @@ package christmas.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import christmas.domain.promotion.date.PromotionDays;
-import christmas.domain.promotion.date.PromotionPeriod;
+import christmas.domain.promotion.condition.date.PromotionDays;
+import christmas.domain.promotion.condition.date.PromotionPeriod;
 import christmas.utils.StringParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
