@@ -23,8 +23,15 @@ class VisitingDateTest {
     @DisplayName("방문날짜가 주어진 기간에 포함되는지 확인")
     @Test
     void isContainedInPeriod() {
-        VisitingDate visitingDate = new VisitingDate(2);
-        assertThat(PromotionPeriod.DECEMBER.contains(visitingDate)).isEqualTo(true);
+        VisitingDate visitingDate = new VisitingDate(25);
+        assertThat(PromotionPeriod.UNTIL_CHRISTMAS.contains(visitingDate)).isEqualTo(true);
+    }
+
+    @DisplayName("26일부터는 크리스마스 디데이 기간에 포함 안됨")
+    @Test
+    void isContainedInChristmasDDayPeriod() {
+        VisitingDate visitingDate = new VisitingDate(26);
+        assertThat(PromotionPeriod.UNTIL_CHRISTMAS.contains(visitingDate)).isEqualTo(false);
     }
 
     @DisplayName("방문날짜가 주어진 날들에 포함되는지 확인")
