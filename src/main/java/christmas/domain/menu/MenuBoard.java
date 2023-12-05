@@ -15,7 +15,7 @@ public class MenuBoard {
     }
 
     public static Menu getBy(String name) {
-        return getAll().stream().filter(menu -> menu.getName().equals(name)).findFirst()
+        return getAll().stream().filter(menu -> menu.isSameName(name)).findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }
 }
