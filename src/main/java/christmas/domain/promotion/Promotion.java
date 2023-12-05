@@ -4,8 +4,9 @@ import christmas.domain.Order;
 import christmas.domain.VisitingDate;
 
 public interface Promotion {
-    public String getName();
+    String discountPromotionName = "할인 이벤트";
+    String giftPromotionName = "증정 이벤트";
 
-    public boolean isApplicable(VisitingDate visitingDate, Order order);
+    boolean isApplicable(VisitingDate visitingDate, Order order);
 
 }

@@ -10,6 +10,9 @@ public class VisitingDate {
     private static final int PROMOTION_MONTH = DateConstraint.PROMOTION_MONTH.getValue();
     private static final int START_DAY = DateConstraint.DAY_OF_START.getValue();
     private static final int LAST_DAY = DateConstraint.DAY_OF_LAST.getValue();
+    private static final int FRIDAY_VALUE = 5;
+    private static final int SATURDAY_VALUE = 6;
+
     private final LocalDate visitDay;
 
     public VisitingDate(int day) {
@@ -23,6 +26,19 @@ public class VisitingDate {
 
     public boolean isContainedIn(List<LocalDate> days) {
         return days.contains(visitDay);
+    }
+
+    public int getDifferenceFromStartDay() {
+        return visitDay.getDayOfMonth() - START_DAY;
+    }
+
+    public boolean isWeekend() {
+        int dayOfWeekValue = visitDay.getDayOfWeek().getValue();
+        return dayOfWeekValue == FRIDAY_VALUE || dayOfWeekValue == SATURDAY_VALUE;
+    }
+
+    public boolean isWeekday() {
+        return !isWeekend();
     }
 
     private void validate(int day) {

@@ -12,7 +12,7 @@ public class Order {
     private static final int MAX_COUNT_OF_MENU = OrderConstraint.MAX_COUNT_OF_TOTAL_MENU.getValue();
     private final Map<Menu, Integer> orderDetails;
 
-    Order(Map<Menu, Integer> orderDetailsInput) {
+    public Order(Map<Menu, Integer> orderDetailsInput) {
         validateHasOnlyDrinks(orderDetailsInput.keySet());
         validateTotalCounts(orderDetailsInput.values().stream().toList());
         orderDetails = orderDetailsInput;
@@ -25,6 +25,13 @@ public class Order {
     public int calculateTotalOriginPrice() {
         return orderDetails.keySet().stream()
                 .mapToInt(menu -> menu.getPrice() * orderDetails.get(menu))
+                .sum();
+    }
+
+    public int getCountOfMenuIn(Class<? extends Menu> category) {
+        return orderDetails.keySet().stream()
+                .filter(menu -> menu.isSameCategory(category))
+                .mapToInt(orderDetails::get)
                 .sum();
     }
 

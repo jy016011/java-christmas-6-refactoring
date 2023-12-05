@@ -61,4 +61,15 @@ class OrderTest {
         Order order = new Order(input);
         assertThat(OriginTotalPrice.LIMIT_AMOUNT_OF_GIFT_PROMOTION.isApplicablePrice(order)).isEqualTo(true);
     }
+
+    @DisplayName("주문한 메뉴 중 주어진 카테고리에 해당하는 메뉴 개수 반환")
+    @Test
+    void getCountOfMenuByCategory() {
+        Map<Menu, Integer> input = new LinkedHashMap<>();
+        input.put(Main.T_BONE_STEAK, 2);
+        input.put(Dessert.ICE_CREAM, 5);
+        Order order = new Order(input);
+        assertThat(order.getCountOfMenuIn(Main.class)).isEqualTo(2);
+        assertThat(order.getCountOfMenuIn(Dessert.class)).isEqualTo(5);
+    }
 }

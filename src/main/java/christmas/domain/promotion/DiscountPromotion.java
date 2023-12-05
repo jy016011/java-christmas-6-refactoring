@@ -5,12 +5,13 @@ import static christmas.domain.constraint.DiscountConstraint.CHRISTMAS_D_DAY_BAS
 import static christmas.domain.constraint.DiscountConstraint.DAY_OF_WEEK_UNIT_AMOUNT;
 import static christmas.domain.constraint.DiscountConstraint.SPECIAL_BASE_AMOUNT;
 import static christmas.domain.promotion.condition.date.PromotionDays.SPECIAL_DAYS;
-import static christmas.domain.promotion.condition.date.PromotionPeriod.DECEMBER;
 import static christmas.domain.promotion.condition.date.PromotionPeriod.UNTIL_CHRISTMAS;
 import static christmas.domain.promotion.condition.order.OriginTotalPrice.MIN_AMOUNT_FOR_APPLICABLE;
 
 import christmas.domain.Order;
 import christmas.domain.VisitingDate;
+import christmas.domain.menu.Dessert;
+import christmas.domain.menu.Main;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 
@@ -20,19 +21,19 @@ public enum DiscountPromotion implements Promotion {
             ((visitingDate, order) -> UNTIL_CHRISTMAS.contains(visitingDate)
                     && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order)),
             (visitingDate, order) -> CHRISTMAS_D_DAY_BASE_AMOUNT.getValue()
-                    + visitingDate.getDifferenceFromStartDay * CHRISTMAS_D_DAY_ADDITIONAL_UNIT_AMOUNT.getValue()
+                    + visitingDate.getDifferenceFromStartDay() * CHRISTMAS_D_DAY_ADDITIONAL_UNIT_AMOUNT.getValue()
     ),
     WEEKDAY(
             "평일 할인",
-            (visitingDate, order) -> DECEMBER.contains(visitingDate)
+            (visitingDate, order) -> visitingDate.isWeekday()
                     && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
-            (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfDessert()
+            (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfMenuIn(Dessert.class)
     ),
     WEEKEND(
             "주말 할인",
-            (visitingDate, order) -> DECEMBER.contains(visitingDate)
+            (visitingDate, order) -> visitingDate.isWeekend()
                     && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
-            (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfMain()
+            (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfMenuIn(Main.class)
     ),
     SPECIAL_DAY(
             "특별 할인",
@@ -65,7 +66,6 @@ public enum DiscountPromotion implements Promotion {
         return amountCalculator.apply(visitingDate, order);
     }
 
-    @Override
     public String getName() {
         return name;
     }

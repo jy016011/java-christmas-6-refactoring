@@ -33,4 +33,11 @@ class VisitingDateTest {
         VisitingDate visitingDate = new VisitingDate(3);
         assertThat(PromotionDays.SPECIAL_DAYS.contains(visitingDate)).isEqualTo(true);
     }
+
+    @DisplayName("크리스마스 디데이 할인액 산출에 필요한 시작 첫 날로부터의 차이 반환")
+    @Test
+    void getCountOfAdditionalChristmasDDayDiscount() {
+        VisitingDate visitingDate = new VisitingDate(3);
+        assertThat(visitingDate.getDifferenceFromStartDay()).isEqualTo(2);
+    }
 }

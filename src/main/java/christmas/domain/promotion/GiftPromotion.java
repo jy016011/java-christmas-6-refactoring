@@ -11,20 +11,17 @@ import java.util.function.BiPredicate;
 
 public enum GiftPromotion implements Promotion {
     CHAMPAGNE_GIFT(
-            "증정 이벤트",
             (visitingDate, order) ->
                     PromotionPeriod.DECEMBER.contains(visitingDate)
                             && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
             CHAMPAGNE,
             1
     );
-    private final String name;
     private final BiPredicate<VisitingDate, Order> condition;
     private final Menu gift;
     private final int quantity;
 
-    GiftPromotion(String name, BiPredicate<VisitingDate, Order> condition, Menu gift, int quantity) {
-        this.name = name;
+    GiftPromotion(BiPredicate<VisitingDate, Order> condition, Menu gift, int quantity) {
         this.condition = condition;
         this.gift = gift;
         this.quantity = quantity;
@@ -37,11 +34,6 @@ public enum GiftPromotion implements Promotion {
 
     public int getAmount() {
         return gift.getPrice() * quantity;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     public Menu getGift() {
