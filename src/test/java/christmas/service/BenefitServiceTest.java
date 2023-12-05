@@ -37,7 +37,7 @@ class BenefitServiceTest {
     void getDiscountDetailsByExampleOnWeekday() {
         visitingDate = new VisitingDate(3);
         AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        Map<String, Integer> discountContext = appliedDiscounts.discountContext();
+        Map<String, Integer> discountContext = appliedDiscounts.details();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
                 DiscountPromotion.WEEKDAY.getName(),
@@ -64,7 +64,7 @@ class BenefitServiceTest {
     void getDiscountDetailsByExampleOnWeekend() {
         visitingDate = new VisitingDate(2);
         AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        Map<String, Integer> discountContext = appliedDiscounts.discountContext();
+        Map<String, Integer> discountContext = appliedDiscounts.details();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
                 DiscountPromotion.WEEKEND.getName()

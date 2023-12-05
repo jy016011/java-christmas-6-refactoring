@@ -2,7 +2,6 @@ package christmas.domain.dto;
 
 import christmas.domain.promotion.Gift;
 import christmas.domain.promotion.Promotion;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,13 +12,13 @@ public record AppliedGifts(Map<Gift, Integer> giftDetails) {
         Map<String, Integer> gifts = new HashMap<>();
         giftDetails.keySet()
                 .forEach(gift -> gifts.put(gift.getMenu().getName(), gift.getQuantity()));
-        return Collections.unmodifiableMap(gifts);
+        return gifts;
     }
 
-    public Map<String, Integer> getContext() {
-        Map<String, Integer> context = new HashMap<>();
-        context.put(Promotion.giftPromotionName, getTotalBenefitAmount());
-        return context;
+    public Map<String, Integer> getDetails() {
+        Map<String, Integer> details = new HashMap<>();
+        details.put(Promotion.giftPromotionName, getTotalBenefitAmount());
+        return details;
     }
 
     public int getTotalBenefitAmount() {
