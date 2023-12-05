@@ -1,5 +1,7 @@
 package christmas.utils;
 
+import java.util.List;
+
 public class ArgumentValidator {
     private static final String ERROR_MESSAGE_HEADER = "[ERROR]";
 
@@ -32,10 +34,23 @@ public class ArgumentValidator {
         }
     }
 
+    public static void isUnique(List<Object> objects) {
+        boolean isDuplicated = objects.stream().distinct().count() != objects.size();
+        if (isDuplicated) {
+            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " 중복이 있습니다.");
+        }
+    }
+
     public static void isEqual(int size, int limit) {
         boolean notMatchSize = size != limit;
         if (notMatchSize) {
             raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + limit + "개만큼 입력하세요.");
+        }
+    }
+
+    public static void throwIllegalArgumentExceptionBy(boolean condition, String message) {
+        if (condition) {
+            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + message);
         }
     }
 
