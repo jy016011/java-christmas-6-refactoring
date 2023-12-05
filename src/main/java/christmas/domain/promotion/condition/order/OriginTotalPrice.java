@@ -1,5 +1,6 @@
 package christmas.domain.promotion.condition.order;
 
+import christmas.domain.Order;
 import christmas.domain.constraint.OrderConstraint;
 
 public enum OriginTotalPrice implements PromotionOrder {
@@ -12,7 +13,7 @@ public enum OriginTotalPrice implements PromotionOrder {
         this.conditionAmount = conditionAmount;
     }
 
-    public boolean isBigger(int originTotalAmount) {
-        return conditionAmount > originTotalAmount;
+    public boolean isApplicablePrice(Order order) {
+        return order.isOriginTotalPriceNoLessThan(conditionAmount);
     }
 }

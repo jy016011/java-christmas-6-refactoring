@@ -10,17 +10,23 @@ import java.util.Set;
 
 public class Order {
     private static final int MAX_COUNT_OF_MENU = OrderConstraint.MAX_COUNT_OF_TOTAL_MENU.getValue();
-//    private final Map<Menu, Integer> orderDetails;
+    private final Map<Menu, Integer> orderDetails;
 
     Order(Map<Menu, Integer> orderDetailsInput) {
         validateHasOnlyDrinks(orderDetailsInput.keySet());
         validateTotalCounts(orderDetailsInput.values().stream().toList());
-//        orderDetails = setOrderDetails(menuNames, menuCounts);
+        orderDetails = orderDetailsInput;
     }
 
-//    private Map<Menu, Integer> setOrderDetails(List<String> menuNames, List<Integer> menuCounts) {
-//
-//    }
+    public boolean isOriginTotalPriceNoLessThan(int standardAmount) {
+        return calculateTotalOriginPrice() >= standardAmount;
+    }
+
+    public int calculateTotalOriginPrice() {
+        return orderDetails.keySet().stream()
+                .mapToInt(menu -> menu.getPrice() * orderDetails.get(menu))
+                .sum();
+    }
 
     private void validateHasOnlyDrinks(Set<Menu> menus) {
         boolean hasOnlyDrinks = menus.stream().allMatch(menu -> menu.isSameCategory(Drink.class));
