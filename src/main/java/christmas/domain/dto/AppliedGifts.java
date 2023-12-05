@@ -1,17 +1,19 @@
 package christmas.domain.dto;
 
-import christmas.domain.menu.Menu;
+import christmas.domain.promotion.Gift;
 import christmas.domain.promotion.Promotion;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-//key: gift name
-public record AppliedGifts(Map<Menu, Integer> giftDetails) {
+//key: gift, value: amount of benefit
+public record AppliedGifts(Map<Gift, Integer> giftDetails) {
 
-    @Override
-    public Map<Menu, Integer> giftDetails() {
-        return Collections.unmodifiableMap(giftDetails);
+    public Map<String, Integer> getGifts() {
+        Map<String, Integer> gifts = new HashMap<>();
+        giftDetails.keySet()
+                .forEach(gift -> gifts.put(gift.getMenu().getName(), gift.getQuantity()));
+        return Collections.unmodifiableMap(gifts);
     }
 
     public Map<String, Integer> getContext() {
@@ -22,7 +24,7 @@ public record AppliedGifts(Map<Menu, Integer> giftDetails) {
 
     public int getTotalBenefitAmount() {
         return giftDetails.keySet().stream()
-                .mapToInt(Menu::getPrice)
+                .mapToInt(giftDetails::get)
                 .sum();
     }
 }

@@ -4,8 +4,8 @@ import christmas.domain.Order;
 import christmas.domain.VisitingDate;
 import christmas.domain.dto.AppliedDiscounts;
 import christmas.domain.dto.AppliedGifts;
-import christmas.domain.menu.Menu;
 import christmas.domain.promotion.DiscountPromotion;
+import christmas.domain.promotion.Gift;
 import christmas.domain.promotion.GiftPromotion;
 import christmas.domain.promotion.Promotion;
 import java.util.Arrays;
@@ -33,11 +33,13 @@ public class BenefitService {
 
     public static AppliedGifts getApplicableGifts(VisitingDate visitingDate, Order order) {
         List<Promotion> giftPromotions = findApplicableGiftPromotions(visitingDate, order);
-        Map<Menu, Integer> giftDetails = new LinkedHashMap<>();
+        Map<Gift, Integer> giftDetails = new LinkedHashMap<>();
         giftPromotions.stream()
                 .map(promotion -> (GiftPromotion) promotion)
                 .forEach(
-                        giftPromotion -> giftDetails.put(giftPromotion.getGift(), giftPromotion.getQuantity())
+                        giftPromotion -> giftDetails.put(giftPromotion.getGift(),
+                                giftPromotion.getAmount()
+                        )
                 );
         return new AppliedGifts(giftDetails);
     }
