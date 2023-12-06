@@ -49,6 +49,14 @@ class ParseServiceTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @DisplayName("중복된 메뉴 입력이 있을 시 예외가 발생할 것이다.")
+    @ValueSource(strings = {"타파스-1,타파스-2", "타파스-1,바비큐립-1,바비큐립-1,제로콜라-1"})
+    @ParameterizedTest
+    void inputDuplicatedMenu(String input) {
+        assertThatThrownBy(() -> ParseService.toOrderMap(input))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
     @DisplayName("이외 쉼표와 하이픈의 개수를 통해 형식을 검증하는 기능의 허점을 이용한 입력시 예외 발생 검증")
     @ValueSource(strings = {"-바비큐립-1,초코케이크-2,", "초코케이크,--"})
     @ParameterizedTest
