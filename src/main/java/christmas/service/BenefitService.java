@@ -2,6 +2,7 @@ package christmas.service;
 
 import christmas.domain.Order;
 import christmas.domain.VisitingDate;
+import christmas.domain.badge.Badge;
 import christmas.domain.dto.AppliedDiscounts;
 import christmas.domain.dto.AppliedGifts;
 import christmas.domain.promotion.DiscountPromotion;
@@ -42,6 +43,10 @@ public class BenefitService {
                         )
                 );
         return new AppliedGifts(giftDetails);
+    }
+
+    public static Badge getBadgeBy(int totalBenefitAmount) {
+        return Badge.getBy(totalBenefitAmount);
     }
 
     private static List<Promotion> findApplicableDiscountPromotions(VisitingDate visitingDate, Order order) {

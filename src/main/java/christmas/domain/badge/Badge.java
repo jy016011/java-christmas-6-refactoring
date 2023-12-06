@@ -1,13 +1,13 @@
 package christmas.domain.badge;
 
-import christmas.view.constant.output.ResultFormat;
+import christmas.view.constant.output.OutputMessage;
 import java.util.Arrays;
 
 public enum Badge {
     SANTA("산타", 20_000),
     TREE("트리", 10_000),
     STAR("별", 5_000),
-    NONE(ResultFormat.NO_BENEFIT.getMessage(), 0);
+    NONE(OutputMessage.NO_BENEFIT, 0);
 
     private final String name;
     private final int lowerBoundInclusive;

@@ -1,5 +1,7 @@
 package christmas.view.constant.output;
 
+import static christmas.domain.constraint.DateConstraint.PROMOTION_MONTH;
+
 public enum HeadingOfResult implements OutputMessage {
     ORDERS("<주문 메뉴>"),
     ORIGIN_TOTAL_PRICE("<할인 전 총주문 금액>"),
@@ -7,7 +9,7 @@ public enum HeadingOfResult implements OutputMessage {
     BENEFIT_DETAIL("<혜택 내역>"),
     TOTAL_BENEFIT("<총혜택 금액>"),
     EXPECTED_PAYMENT_AMOUNT("<할인 후 예상 결제 금액>"),
-    BADGE("<%d월 이벤트 배지>");
+    BADGE(String.format("<%d월 이벤트 배지>", PROMOTION_MONTH.getValue()));
 
     private final String message;
 
