@@ -65,4 +65,16 @@ class OutputViewTest {
                 "142,000원"
         );
     }
+
+    @DisplayName("증정 메뉴 출력")
+    @Test
+    void printGiftDetails() {
+        Map<String, Integer> gifts = new LinkedHashMap<>();
+        gifts.put("샴페인", 1);
+        OutputView.printGiftDetails(gifts);
+        assertThat(output()).contains(
+                "<증정 메뉴>",
+                "샴페인 1개"
+        );
+    }
 }

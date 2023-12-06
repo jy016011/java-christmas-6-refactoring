@@ -17,9 +17,7 @@ public class OutputView {
 
     public static void printOrderDetails(Map<String, Integer> orderDetails) {
         System.out.println(HeadingOfResult.ORDERS.getMessage());
-        orderDetails.forEach(
-                (menuName, count) -> System.out.println(Format.MENU_AND_COUNT.getMessageWith(menuName, count))
-        );
+        orderDetails.forEach(OutputView::printMenuAndCount);
     }
 
     public static void printTotalOriginPrice(int totalOriginPrice) {
@@ -27,4 +25,12 @@ public class OutputView {
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(totalOriginPrice));
     }
 
+    public static void printGiftDetails(Map<String, Integer> giftDetails) {
+        System.out.println(HeadingOfResult.GIFT_DETAIL.getMessage());
+        giftDetails.forEach(OutputView::printMenuAndCount);
+    }
+
+    private static void printMenuAndCount(String menuName, int count) {
+        System.out.println(Format.MENU_AND_COUNT.getMessageWith(menuName, count));
+    }
 }

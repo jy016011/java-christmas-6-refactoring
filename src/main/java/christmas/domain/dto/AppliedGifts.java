@@ -8,6 +8,7 @@ import java.util.Map;
 //key: gift, value: amount of benefit
 public record AppliedGifts(Map<Gift, Integer> giftDetails) {
 
+    //key: name of gift, value: quantity of gift
     public Map<String, Integer> getGifts() {
         Map<String, Integer> gifts = new HashMap<>();
         giftDetails.keySet()
@@ -15,6 +16,7 @@ public record AppliedGifts(Map<Gift, Integer> giftDetails) {
         return gifts;
     }
 
+    //key: promotion name, value: total amount of gift
     public Map<String, Integer> getDetails() {
         Map<String, Integer> details = new HashMap<>();
         details.put(Promotion.giftPromotionName, getTotalBenefitAmount());
