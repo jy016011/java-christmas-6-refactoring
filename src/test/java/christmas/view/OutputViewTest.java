@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -35,5 +37,21 @@ class OutputViewTest {
     void printGreeting() {
         OutputView.printGreeting();
         assertThat(output()).contains("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
+    }
+
+    @DisplayName("주문 메뉴 출력")
+    @Test
+    void printOrderDetails() {
+        Map<String, Integer> order = new LinkedHashMap<>();
+        order.put("타파스", 1);
+        order.put("티본스테이크", 1);
+        order.put("레드와인", 1);
+        OutputView.printOrderDetails(order);
+        assertThat(output()).contains(
+                "<주문 메뉴>",
+                "타파스 1개",
+                "티본스테이크 1개",
+                "레드와인 1개"
+        );
     }
 }
