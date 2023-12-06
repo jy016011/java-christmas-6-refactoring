@@ -2,6 +2,10 @@ package christmas.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import christmas.domain.dto.AppliedDiscounts;
+import christmas.domain.dto.AppliedGifts;
+import christmas.domain.promotion.DiscountPromotion;
+import christmas.domain.promotion.Gift;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedHashMap;
@@ -69,12 +73,40 @@ class OutputViewTest {
     @DisplayName("증정 메뉴 출력")
     @Test
     void printGiftDetails() {
-        Map<String, Integer> gifts = new LinkedHashMap<>();
-        gifts.put("샴페인", 1);
-        OutputView.printGiftDetails(gifts);
+        AppliedGifts appliedGifts = getAppliedGifts();
+        OutputView.printGiftDetails(appliedGifts);
         assertThat(output()).contains(
                 "<증정 메뉴>",
                 "샴페인 1개"
         );
+    }
+
+    @DisplayName("혜택 내역 출력")
+    @Test
+    void printBenefitDetails() {
+        AppliedDiscounts appliedDiscounts = getAppliedDiscounts();
+        AppliedGifts appliedGifts = getAppliedGifts();
+        OutputView.printPromotionDetails(appliedDiscounts, appliedGifts);
+        assertThat(output()).contains(
+                "<혜택 내역>",
+                "크리스마스 디데이 할인: -1,200원",
+                "평일 할인: -4,046원",
+                "특별 할인: -1,000원",
+                "증정 이벤트: -25,000원"
+        );
+    }
+
+    private AppliedDiscounts getAppliedDiscounts() {
+        Map<String, Integer> discountDetails = new LinkedHashMap<>();
+        discountDetails.put(DiscountPromotion.CHRISTMAS_D_DAY.getName(), 1_200);
+        discountDetails.put(DiscountPromotion.WEEKDAY.getName(), 4_046);
+        discountDetails.put(DiscountPromotion.SPECIAL_DAY.getName(), 1_000);
+        return new AppliedDiscounts(discountDetails);
+    }
+
+    private AppliedGifts getAppliedGifts() {
+        Map<Gift, Integer> gifts = new LinkedHashMap<>();
+        gifts.put(Gift.CHAMPAGNE, Gift.CHAMPAGNE.calculatePrice());
+        return new AppliedGifts(gifts);
     }
 }

@@ -1,5 +1,7 @@
 package christmas.view;
 
+import christmas.domain.dto.AppliedDiscounts;
+import christmas.domain.dto.AppliedGifts;
 import christmas.view.constant.output.Format;
 import christmas.view.constant.output.HeadingOfResult;
 import christmas.view.constant.output.OutputMessage;
@@ -25,12 +27,32 @@ public class OutputView {
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(totalOriginPrice));
     }
 
-    public static void printGiftDetails(Map<String, Integer> giftDetails) {
+    public static void printGiftDetails(AppliedGifts appliedGifts) {
         System.out.println(HeadingOfResult.GIFT_DETAIL.getMessage());
-        giftDetails.forEach(OutputView::printMenuAndCount);
+        appliedGifts.getGifts().forEach(OutputView::printMenuAndCount);
+    }
+
+    public static void printPromotionDetails(AppliedDiscounts appliedDiscounts, AppliedGifts appliedGifts) {
+        System.out.println(HeadingOfResult.BENEFIT_DETAIL.getMessage());
+        printAppliedDiscounts(appliedDiscounts);
+        printAppliedGifts(appliedGifts);
     }
 
     private static void printMenuAndCount(String menuName, int count) {
         System.out.println(Format.MENU_AND_COUNT.getMessageWith(menuName, count));
+    }
+
+    private static void printAppliedDiscounts(AppliedDiscounts appliedDiscounts) {
+        appliedDiscounts.details()
+                .forEach(OutputView::printEachPromotion);
+    }
+
+    private static void printAppliedGifts(AppliedGifts appliedGifts) {
+        appliedGifts.getDetails()
+                .forEach(OutputView::printEachPromotion);
+    }
+
+    private static void printEachPromotion(String name, int amountOfBenefit) {
+        System.out.println(Format.BENEFIT_DETAIL.getMessageWith(name, amountOfBenefit));
     }
 }
