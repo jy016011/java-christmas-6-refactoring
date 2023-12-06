@@ -27,13 +27,6 @@ public class ArgumentValidator {
         }
     }
 
-    public static void isDivisor(int dividend, int divisor) {
-        boolean canNotDivide = !(dividend % divisor == 0);
-        if (canNotDivide) {
-            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + divisor + "단위 이상으로 입력하세요.");
-        }
-    }
-
     public static void isUnique(List<Object> objects) {
         boolean isDuplicated = objects.stream().distinct().count() != objects.size();
         if (isDuplicated) {
@@ -41,10 +34,10 @@ public class ArgumentValidator {
         }
     }
 
-    public static void isEqual(int size, int limit) {
-        boolean notMatchSize = size != limit;
+    public static void isEqual(int checkingNumber, int standardNumber) {
+        boolean notMatchSize = checkingNumber != standardNumber;
         if (notMatchSize) {
-            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + limit + "개만큼 입력하세요.");
+            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + standardNumber + "과(와) 다릅니다.");
         }
     }
 

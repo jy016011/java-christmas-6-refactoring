@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 public class StringParser {
     private static final int INCLUDING_LAST_BLANK = -1;
+    private static final int ITSELF = 0;
 
     private StringParser() {
     }
@@ -19,5 +20,9 @@ public class StringParser {
 
     public static int toInteger(String input) {
         return Integer.parseInt(input);
+    }
+
+    public static char toChar(String input) {
+        return input.charAt(ITSELF);
     }
 }
