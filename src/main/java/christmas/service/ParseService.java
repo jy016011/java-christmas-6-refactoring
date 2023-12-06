@@ -1,6 +1,14 @@
 package christmas.service;
 
-import christmas.domain.constraint.OrderConstraint;
+import static christmas.domain.constraint.OrderConstraint.MAX_COUNT_OF_TOTAL_MENU;
+import static christmas.domain.constraint.OrderConstraint.MIN_COUNT_OF_EACH_MENU;
+import static christmas.service.constraint.DataStructureConstraint.COUNT_INDEX;
+import static christmas.service.constraint.DataStructureConstraint.DIFFERENCE_BETWEEN_SEPARATORS;
+import static christmas.service.constraint.DataStructureConstraint.LIST_OF_NAME_AND_COUNT_SIZE;
+import static christmas.service.constraint.DataStructureConstraint.NAME_INDEX;
+import static christmas.service.constraint.OrderInputConstraint.MENU_SEPARATOR;
+import static christmas.service.constraint.OrderInputConstraint.NAME_AND_COUNT_SEPARATOR;
+
 import christmas.domain.menu.Menu;
 import christmas.domain.menu.MenuBoard;
 import christmas.utils.ArgumentValidator;
@@ -10,13 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 public class ParseService {
-    private static final String MENU_SEPARATOR = ",";
-    private static final String NAME_AND_COUNT_SEPARATOR = "-";
-    private static final int DIFFERENCE_BETWEEN_SEPARATORS = 1;
-    private static final int LIST_OF_NAME_AND_COUNT_SIZE = 2;
-    private static final int NAME_INDEX = 0;
-    private static final int COUNT_INDEX = 1;
-
     private ParseService() {
     }
 
@@ -34,25 +35,25 @@ public class ParseService {
 
     private static void validateFormat(String userInput) {
         int menuSeparatorCount = (int) userInput.chars()
-                .filter(c -> c == StringParser.toChar(MENU_SEPARATOR)).count();
+                .filter(c -> c == StringParser.toChar(MENU_SEPARATOR.getValue())).count();
         int nameAndCountSeparatorCount = (int) userInput.chars()
-                .filter(c -> c == StringParser.toChar(NAME_AND_COUNT_SEPARATOR)).count();
+                .filter(c -> c == StringParser.toChar(NAME_AND_COUNT_SEPARATOR.getValue())).count();
         ArgumentValidator.isEqual(
                 nameAndCountSeparatorCount - menuSeparatorCount,
-                DIFFERENCE_BETWEEN_SEPARATORS
+                DIFFERENCE_BETWEEN_SEPARATORS.getValue()
         );
     }
 
     private static void recordOrder(Map<Menu, Integer> orderDetailsInput, String userInput) {
-        List<String> menuInputs = StringParser.toTrimmedStringList(userInput, MENU_SEPARATOR);
+        List<String> menuInputs = StringParser.toTrimmedStringList(userInput, MENU_SEPARATOR.getValue());
         menuInputs.forEach(menuInput -> recordMenuAndCount(orderDetailsInput, menuInput));
     }
 
     private static void recordMenuAndCount(Map<Menu, Integer> orderDetailsInput, String menuInput) {
-        List<String> nameAndCount = StringParser.toTrimmedStringList(menuInput, NAME_AND_COUNT_SEPARATOR);
+        List<String> nameAndCount = StringParser.toTrimmedStringList(menuInput, NAME_AND_COUNT_SEPARATOR.getValue());
         validateIsUsedNameAndCountSeparator(nameAndCount);
-        Menu menu = MenuBoard.getBy(nameAndCount.get(NAME_INDEX));
-        int count = toNumber(nameAndCount.get(COUNT_INDEX));
+        Menu menu = MenuBoard.getBy(nameAndCount.get(NAME_INDEX.getValue()));
+        int count = toNumber(nameAndCount.get(COUNT_INDEX.getValue()));
         validateIsUnique(orderDetailsInput, menu);
         orderDetailsInput.put(menu, count);
     }
@@ -63,12 +64,12 @@ public class ParseService {
     }
 
     private static void validateIsSeparated(int size) {
-        ArgumentValidator.isEqual(size, LIST_OF_NAME_AND_COUNT_SIZE);
+        ArgumentValidator.isEqual(size, LIST_OF_NAME_AND_COUNT_SIZE.getValue());
     }
 
     private static void validateNameAndCount(List<String> nameAndCount) {
-        validateIsInMenu(nameAndCount.get(NAME_INDEX));
-        validateIsInRange(nameAndCount.get(COUNT_INDEX));
+        validateIsInMenu(nameAndCount.get(NAME_INDEX.getValue()));
+        validateIsInRange(nameAndCount.get(COUNT_INDEX.getValue()));
     }
 
     private static void validateIsUnique(Map<Menu, Integer> orderDetailsInput, Menu menu) {
@@ -85,8 +86,8 @@ public class ParseService {
 
     private static void validateIsInRange(String menuCount) {
         int count = toNumber(menuCount);
-        ArgumentValidator.isNotLessThan(count, OrderConstraint.MIN_COUNT_OF_EACH_MENU.getValue());
-        ArgumentValidator.isNotGreaterThan(count, OrderConstraint.MAX_COUNT_OF_TOTAL_MENU.getValue());
+        ArgumentValidator.isNotLessThan(count, MIN_COUNT_OF_EACH_MENU.getValue());
+        ArgumentValidator.isNotGreaterThan(count, MAX_COUNT_OF_TOTAL_MENU.getValue());
     }
 
 }
