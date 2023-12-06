@@ -8,6 +8,7 @@ import christmas.domain.promotion.DiscountPromotion;
 import christmas.domain.promotion.Gift;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
@@ -81,6 +82,17 @@ class OutputViewTest {
         );
     }
 
+    @DisplayName("증정 메뉴 없음 출력")
+    @Test
+    void printNoneGift() {
+        AppliedGifts appliedGifts = new AppliedGifts(new HashMap<>());
+        OutputView.printGiftDetails(appliedGifts);
+        assertThat(output()).contains(
+                "<증정 메뉴>",
+                "없음"
+        );
+    }
+
     @DisplayName("혜택 내역 출력")
     @Test
     void printBenefitDetails() {
@@ -93,6 +105,18 @@ class OutputViewTest {
                 "평일 할인: -4,046원",
                 "특별 할인: -1,000원",
                 "증정 이벤트: -25,000원"
+        );
+    }
+
+    @DisplayName("혜택 내역 없음")
+    @Test
+    void printNoBenefitDetails() {
+        AppliedDiscounts appliedDiscounts = new AppliedDiscounts(new LinkedHashMap<>());
+        AppliedGifts appliedGifts = new AppliedGifts(new LinkedHashMap<>());
+        OutputView.printPromotionDetails(appliedDiscounts, appliedGifts);
+        assertThat(output()).contains(
+                "<혜택 내역>",
+                "없음"
         );
     }
 

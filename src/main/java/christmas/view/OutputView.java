@@ -29,11 +29,19 @@ public class OutputView {
 
     public static void printGiftDetails(AppliedGifts appliedGifts) {
         System.out.println(HeadingOfResult.GIFT_DETAIL.getMessage());
+        if (appliedGifts.getGifts().isEmpty()) {
+            printNothing();
+            return;
+        }
         appliedGifts.getGifts().forEach(OutputView::printMenuAndCount);
     }
 
     public static void printPromotionDetails(AppliedDiscounts appliedDiscounts, AppliedGifts appliedGifts) {
         System.out.println(HeadingOfResult.BENEFIT_DETAIL.getMessage());
+        if (appliedDiscounts.details().isEmpty() && appliedGifts.getGifts().isEmpty()) {
+            printNothing();
+            return;
+        }
         printAppliedDiscounts(appliedDiscounts);
         printAppliedGifts(appliedGifts);
     }
@@ -54,5 +62,9 @@ public class OutputView {
 
     private static void printEachPromotion(String name, int amountOfBenefit) {
         System.out.println(Format.BENEFIT_DETAIL.getMessageWith(name, amountOfBenefit));
+    }
+
+    private static void printNothing() {
+        System.out.println(OutputMessage.NO_BENEFIT);
     }
 }
