@@ -22,4 +22,9 @@ public class OutputView {
         );
     }
 
+    public static void printTotalOriginPrice(int totalOriginPrice) {
+        System.out.println(HeadingOfResult.ORIGIN_TOTAL_PRICE.getMessage());
+        System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(totalOriginPrice));
+    }
+
 }

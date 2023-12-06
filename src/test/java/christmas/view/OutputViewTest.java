@@ -54,4 +54,15 @@ class OutputViewTest {
                 "레드와인 1개"
         );
     }
+
+    @DisplayName("할인 전 총주문 금액 출력")
+    @Test
+    void printTotalOriginPrice() {
+        int totalOriginPrice = 142_000;
+        OutputView.printTotalOriginPrice(totalOriginPrice);
+        assertThat(output()).contains(
+                "<할인 전 총주문 금액>",
+                "142,000원"
+        );
+    }
 }
