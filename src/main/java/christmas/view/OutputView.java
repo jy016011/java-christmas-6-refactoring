@@ -18,6 +18,10 @@ public class OutputView {
         System.out.println(OutputMessage.GREETING);
     }
 
+    public static void printDateWithPreview(int visitDay) {
+        System.out.println(OutputMessage.getPreviewOfPromotionResult(visitDay));
+    }
+
     public static void printOrderDetails(Map<String, Integer> orderDetails) {
         System.out.println(HeadingOfResult.ORDERS.getMessage());
         orderDetails.forEach(OutputView::printMenuAndCount);

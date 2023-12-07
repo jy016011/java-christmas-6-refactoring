@@ -47,6 +47,16 @@ class OutputViewTest {
         assertThat(output()).contains("안녕하세요! 우테코 식당 12월 이벤트 플래너입니다.");
     }
 
+    @DisplayName("날짜와 미리보기! 출력")
+    @Test
+    void printDateWithPreview() {
+        int visitDay = 25;
+        OutputView.printDateWithPreview(visitDay);
+        assertThat(output()).contains(
+                "12월 25일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!"
+        );
+    }
+
     @DisplayName("주문 메뉴 출력")
     @Test
     void printOrderDetails() {
