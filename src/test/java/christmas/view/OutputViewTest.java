@@ -2,8 +2,10 @@ package christmas.view;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import christmas.domain.dto.AppliedDiscounts;
-import christmas.domain.dto.AppliedGifts;
+import christmas.domain.AppliedDiscounts;
+import christmas.domain.AppliedGifts;
+import christmas.domain.dto.AppliedDiscountsResponse;
+import christmas.domain.dto.AppliedGiftsResponse;
 import christmas.domain.promotion.DiscountPromotion;
 import christmas.domain.promotion.Gift;
 import java.io.ByteArrayOutputStream;
@@ -74,8 +76,8 @@ class OutputViewTest {
     @DisplayName("증정 메뉴 출력")
     @Test
     void printGiftDetails() {
-        AppliedGifts appliedGifts = getAppliedGifts();
-        OutputView.printGiftDetails(appliedGifts);
+        AppliedGiftsResponse appliedGiftsResponse = getAppliedGiftsResponse();
+        OutputView.printGiftDetails(appliedGiftsResponse);
         assertThat(output()).contains(
                 "<증정 메뉴>",
                 "샴페인 1개"
@@ -85,8 +87,9 @@ class OutputViewTest {
     @DisplayName("증정 메뉴 없음 출력")
     @Test
     void printNoneGift() {
-        AppliedGifts appliedGifts = new AppliedGifts(new HashMap<>());
-        OutputView.printGiftDetails(appliedGifts);
+        AppliedGiftsResponse appliedGiftsResponse =
+                new AppliedGiftsResponse(new AppliedGifts(new HashMap<>()));
+        OutputView.printGiftDetails(appliedGiftsResponse);
         assertThat(output()).contains(
                 "<증정 메뉴>",
                 "없음"
@@ -96,9 +99,9 @@ class OutputViewTest {
     @DisplayName("혜택 내역 출력")
     @Test
     void printBenefitDetails() {
-        AppliedDiscounts appliedDiscounts = getAppliedDiscounts();
-        AppliedGifts appliedGifts = getAppliedGifts();
-        OutputView.printPromotionDetails(appliedDiscounts, appliedGifts);
+        AppliedDiscountsResponse appliedDiscountsResponse = getAppliedDiscountsResponse();
+        AppliedGiftsResponse appliedGiftsResponse = getAppliedGiftsResponse();
+        OutputView.printPromotionDetails(appliedDiscountsResponse, appliedGiftsResponse);
         assertThat(output()).contains(
                 "<혜택 내역>",
                 "크리스마스 디데이 할인: -1,200원",
@@ -111,26 +114,28 @@ class OutputViewTest {
     @DisplayName("혜택 내역 없음")
     @Test
     void printNoBenefitDetails() {
-        AppliedDiscounts appliedDiscounts = new AppliedDiscounts(new LinkedHashMap<>());
-        AppliedGifts appliedGifts = new AppliedGifts(new LinkedHashMap<>());
-        OutputView.printPromotionDetails(appliedDiscounts, appliedGifts);
+        AppliedDiscountsResponse appliedDiscountsResponse =
+                new AppliedDiscountsResponse(new AppliedDiscounts(new LinkedHashMap<>()));
+        AppliedGiftsResponse appliedGiftsResponse =
+                new AppliedGiftsResponse(new AppliedGifts(new HashMap<>()));
+        OutputView.printPromotionDetails(appliedDiscountsResponse, appliedGiftsResponse);
         assertThat(output()).contains(
                 "<혜택 내역>",
                 "없음"
         );
     }
 
-    private AppliedDiscounts getAppliedDiscounts() {
-        Map<String, Integer> discountDetails = new LinkedHashMap<>();
-        discountDetails.put(DiscountPromotion.CHRISTMAS_D_DAY.getName(), 1_200);
-        discountDetails.put(DiscountPromotion.WEEKDAY.getName(), 4_046);
-        discountDetails.put(DiscountPromotion.SPECIAL_DAY.getName(), 1_000);
-        return new AppliedDiscounts(discountDetails);
+    private AppliedDiscountsResponse getAppliedDiscountsResponse() {
+        Map<DiscountPromotion, Integer> discountDetails = new LinkedHashMap<>();
+        discountDetails.put(DiscountPromotion.CHRISTMAS_D_DAY, 1_200);
+        discountDetails.put(DiscountPromotion.WEEKDAY, 4_046);
+        discountDetails.put(DiscountPromotion.SPECIAL_DAY, 1_000);
+        return new AppliedDiscountsResponse(new AppliedDiscounts(discountDetails));
     }
 
-    private AppliedGifts getAppliedGifts() {
+    private AppliedGiftsResponse getAppliedGiftsResponse() {
         Map<Gift, Integer> gifts = new LinkedHashMap<>();
         gifts.put(Gift.CHAMPAGNE, Gift.CHAMPAGNE.calculatePrice());
-        return new AppliedGifts(gifts);
+        return new AppliedGiftsResponse(new AppliedGifts(gifts));
     }
 }

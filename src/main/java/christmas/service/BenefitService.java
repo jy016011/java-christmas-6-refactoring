@@ -1,10 +1,10 @@
 package christmas.service;
 
+import christmas.domain.AppliedDiscounts;
+import christmas.domain.AppliedGifts;
 import christmas.domain.Order;
 import christmas.domain.VisitingDate;
 import christmas.domain.badge.Badge;
-import christmas.domain.dto.AppliedDiscounts;
-import christmas.domain.dto.AppliedGifts;
 import christmas.domain.promotion.DiscountPromotion;
 import christmas.domain.promotion.Gift;
 import christmas.domain.promotion.GiftPromotion;
@@ -21,11 +21,11 @@ public class BenefitService {
 
     public static AppliedDiscounts getApplicableDiscounts(VisitingDate visitingDate, Order order) {
         List<Promotion> discountPromotions = findApplicableDiscountPromotions(visitingDate, order);
-        Map<String, Integer> discountDetails = new LinkedHashMap<>();
+        Map<DiscountPromotion, Integer> discountDetails = new LinkedHashMap<>();
         discountPromotions.stream()
                 .map(promotion -> (DiscountPromotion) promotion)
                 .forEach(
-                        discountPromotion -> discountDetails.put(discountPromotion.getName(),
+                        discountPromotion -> discountDetails.put(discountPromotion,
                                 discountPromotion.getAmount(visitingDate, order)
                         )
                 );

@@ -2,11 +2,11 @@ package christmas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import christmas.domain.AppliedDiscounts;
+import christmas.domain.AppliedGifts;
 import christmas.domain.Order;
 import christmas.domain.VisitingDate;
 import christmas.domain.badge.Badge;
-import christmas.domain.dto.AppliedDiscounts;
-import christmas.domain.dto.AppliedGifts;
 import christmas.domain.menu.Dessert;
 import christmas.domain.menu.Drink;
 import christmas.domain.menu.Main;
@@ -39,7 +39,7 @@ class BenefitServiceTest {
         visitingDate = new VisitingDate(3);
         setOrder();
         AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        Map<String, Integer> discountContext = appliedDiscounts.details();
+        Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
                 DiscountPromotion.WEEKDAY.getName(),
@@ -57,8 +57,8 @@ class BenefitServiceTest {
         visitingDate = new VisitingDate(3);
         setOrder();
         AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
-        Map<Gift, Integer> giftDetails = appliedGifts.giftDetails();
-        assertThat(giftDetails).containsOnlyKeys(Gift.CHAMPAGNE);
+        Map<String, Integer> giftDetails = appliedGifts.getGiftNameAndQuantity();
+        assertThat(giftDetails).containsOnlyKeys(Gift.CHAMPAGNE.getMenu().getName());
         assertThat(appliedGifts.getTotalBenefitAmount()).isEqualTo(25_000);
     }
 
@@ -68,7 +68,7 @@ class BenefitServiceTest {
         visitingDate = new VisitingDate(2);
         setOrder();
         AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        Map<String, Integer> discountContext = appliedDiscounts.details();
+        Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
                 DiscountPromotion.WEEKEND.getName()

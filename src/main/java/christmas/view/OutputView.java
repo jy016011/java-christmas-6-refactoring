@@ -1,7 +1,7 @@
 package christmas.view;
 
-import christmas.domain.dto.AppliedDiscounts;
-import christmas.domain.dto.AppliedGifts;
+import christmas.domain.dto.AppliedDiscountsResponse;
+import christmas.domain.dto.AppliedGiftsResponse;
 import christmas.view.constant.output.Format;
 import christmas.view.constant.output.HeadingOfResult;
 import christmas.view.constant.output.OutputMessage;
@@ -27,37 +27,42 @@ public class OutputView {
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(totalOriginPrice));
     }
 
-    public static void printGiftDetails(AppliedGifts appliedGifts) {
+    public static void printGiftDetails(AppliedGiftsResponse appliedGiftsResponse) {
         System.out.println(HeadingOfResult.GIFT_DETAIL.getMessage());
-        if (appliedGifts.getGifts().isEmpty()) {
+        if (appliedGiftsResponse.giftNameAndQuantity().isEmpty()) {
             printNothing();
             return;
         }
-        appliedGifts.getGifts().forEach(OutputView::printMenuAndCount);
+        appliedGiftsResponse.giftNameAndQuantity().forEach(OutputView::printMenuAndCount);
     }
 
-    public static void printPromotionDetails(AppliedDiscounts appliedDiscounts, AppliedGifts appliedGifts) {
+    public static void printPromotionDetails(
+            AppliedDiscountsResponse appliedDiscountsResponse,
+            AppliedGiftsResponse appliedGiftsResponse
+    ) {
         System.out.println(HeadingOfResult.BENEFIT_DETAIL.getMessage());
-        if (appliedDiscounts.details().isEmpty() && appliedGifts.getGifts().isEmpty()) {
+        if (
+                appliedDiscountsResponse.promotionNameAndBenefit().isEmpty() &&
+                        appliedGiftsResponse.giftNameAndQuantity().isEmpty()
+        ) {
             printNothing();
             return;
         }
-        printAppliedDiscounts(appliedDiscounts);
-        printAppliedGifts(appliedGifts);
+        printAppliedDiscounts(appliedDiscountsResponse);
+        printAppliedGifts(appliedGiftsResponse);
     }
 
     private static void printMenuAndCount(String menuName, int count) {
         System.out.println(Format.MENU_AND_COUNT.getMessageWith(menuName, count));
     }
 
-    private static void printAppliedDiscounts(AppliedDiscounts appliedDiscounts) {
-        appliedDiscounts.details()
+    private static void printAppliedDiscounts(AppliedDiscountsResponse appliedDiscountsResponse) {
+        appliedDiscountsResponse.promotionNameAndBenefit()
                 .forEach(OutputView::printEachPromotion);
     }
 
-    private static void printAppliedGifts(AppliedGifts appliedGifts) {
-        appliedGifts.getDetails()
-                .forEach(OutputView::printEachPromotion);
+    private static void printAppliedGifts(AppliedGiftsResponse appliedGiftsResponse) {
+        printEachPromotion(appliedGiftsResponse.promotionName(), appliedGiftsResponse.totalBenefitAmount());
     }
 
     private static void printEachPromotion(String name, int amountOfBenefit) {
