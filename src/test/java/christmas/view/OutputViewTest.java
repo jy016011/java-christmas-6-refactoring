@@ -87,8 +87,7 @@ class OutputViewTest {
     @DisplayName("증정 메뉴 없음 출력")
     @Test
     void printNoneGift() {
-        AppliedGiftsResponse appliedGiftsResponse =
-                new AppliedGiftsResponse(new AppliedGifts(new HashMap<>()));
+        AppliedGiftsResponse appliedGiftsResponse = getEmptyGiftResponse();
         OutputView.printGiftDetails(appliedGiftsResponse);
         assertThat(output()).contains(
                 "<증정 메뉴>",
@@ -114,14 +113,36 @@ class OutputViewTest {
     @DisplayName("혜택 내역 없음")
     @Test
     void printNoBenefitDetails() {
-        AppliedDiscountsResponse appliedDiscountsResponse =
-                new AppliedDiscountsResponse(new AppliedDiscounts(new LinkedHashMap<>()));
-        AppliedGiftsResponse appliedGiftsResponse =
-                new AppliedGiftsResponse(new AppliedGifts(new HashMap<>()));
+        AppliedDiscountsResponse appliedDiscountsResponse = getEmptyDiscountResponse();
+        AppliedGiftsResponse appliedGiftsResponse = getEmptyGiftResponse();
         OutputView.printPromotionDetails(appliedDiscountsResponse, appliedGiftsResponse);
         assertThat(output()).contains(
                 "<혜택 내역>",
                 "없음"
+        );
+    }
+
+    @DisplayName("총혜택 금액 출력")
+    @Test
+    void printTotalBenefitAmount() {
+        AppliedDiscountsResponse appliedDiscountsResponse = getAppliedDiscountsResponse();
+        AppliedGiftsResponse appliedGiftsResponse = getAppliedGiftsResponse();
+        OutputView.printTotalBenefitAmount(appliedDiscountsResponse, appliedGiftsResponse);
+        assertThat(output()).contains(
+                "<총혜택 금액>",
+                "-31,246원"
+        );
+    }
+
+    @DisplayName("총혜택 금액 0원")
+    @Test
+    void printZeroTotalBenefitAmount() {
+        AppliedDiscountsResponse appliedDiscountsResponse = getEmptyDiscountResponse();
+        AppliedGiftsResponse appliedGiftsResponse = getEmptyGiftResponse();
+        OutputView.printTotalBenefitAmount(appliedDiscountsResponse, appliedGiftsResponse);
+        assertThat(output()).contains(
+                "<총혜택 금액>",
+                "0원"
         );
     }
 
@@ -137,5 +158,13 @@ class OutputViewTest {
         Map<Gift, Integer> gifts = new LinkedHashMap<>();
         gifts.put(Gift.CHAMPAGNE, Gift.CHAMPAGNE.calculatePrice());
         return new AppliedGiftsResponse(new AppliedGifts(gifts));
+    }
+
+    private AppliedDiscountsResponse getEmptyDiscountResponse() {
+        return new AppliedDiscountsResponse(new AppliedDiscounts(new LinkedHashMap<>()));
+    }
+
+    private AppliedGiftsResponse getEmptyGiftResponse() {
+        return new AppliedGiftsResponse(new AppliedGifts(new HashMap<>()));
     }
 }

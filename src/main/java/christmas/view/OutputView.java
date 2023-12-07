@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class OutputView {
     private static final String LINE_SEPARATOR = System.lineSeparator();
+    private static final int ZERO = 0;
 
     private OutputView() {
     }
@@ -50,6 +51,19 @@ public class OutputView {
         }
         printAppliedDiscounts(appliedDiscountsResponse);
         printAppliedGifts(appliedGiftsResponse);
+    }
+
+    public static void printTotalBenefitAmount(
+            AppliedDiscountsResponse appliedDiscountsResponse,
+            AppliedGiftsResponse appliedGiftsResponse
+    ) {
+        System.out.println(HeadingOfResult.TOTAL_BENEFIT.getMessage());
+        int totalBenefitAmount = appliedDiscountsResponse.totalBenefit() + appliedGiftsResponse.totalBenefitAmount();
+        if (totalBenefitAmount == ZERO) {
+            System.out.println(OutputMessage.NO_BENEFIT_AMOUNT);
+            return;
+        }
+        System.out.println(Format.BENEFIT_AMOUNT.getMessageWith(totalBenefitAmount));
     }
 
     private static void printMenuAndCount(String menuName, int count) {
