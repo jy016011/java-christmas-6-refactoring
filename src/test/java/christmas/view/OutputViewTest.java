@@ -146,6 +146,28 @@ class OutputViewTest {
         );
     }
 
+    @DisplayName("예상 결제 금액 출력")
+    @Test
+    void printExpectedPaymentAmount() {
+        AppliedDiscountsResponse appliedDiscountsResponse = getAppliedDiscountsResponse();
+        OutputView.printExpectedPaymentAmount(142_000, appliedDiscountsResponse);
+        assertThat(output()).contains(
+                "<할인 후 예상 결제 금액>",
+                "135,754원"
+        );
+    }
+
+    @DisplayName("할인 없을 시 예상 결제 금액 출력")
+    @Test
+    void printExpectedPaymentAmountWithOutDiscount() {
+        AppliedDiscountsResponse appliedDiscountsResponse = getEmptyDiscountResponse();
+        OutputView.printExpectedPaymentAmount(142_000, appliedDiscountsResponse);
+        assertThat(output()).contains(
+                "<할인 후 예상 결제 금액>",
+                "142,000원"
+        );
+    }
+
     private AppliedDiscountsResponse getAppliedDiscountsResponse() {
         Map<DiscountPromotion, Integer> discountDetails = new LinkedHashMap<>();
         discountDetails.put(DiscountPromotion.CHRISTMAS_D_DAY, 1_200);

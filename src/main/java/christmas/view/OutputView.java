@@ -58,12 +58,22 @@ public class OutputView {
             AppliedGiftsResponse appliedGiftsResponse
     ) {
         System.out.println(HeadingOfResult.TOTAL_BENEFIT.getMessage());
-        int totalBenefitAmount = appliedDiscountsResponse.totalBenefit() + appliedGiftsResponse.totalBenefitAmount();
+        int totalBenefitAmount =
+                appliedDiscountsResponse.totalBenefitAmount() + appliedGiftsResponse.totalBenefitAmount();
         if (totalBenefitAmount == ZERO) {
             System.out.println(OutputMessage.NO_BENEFIT_AMOUNT);
             return;
         }
         System.out.println(Format.BENEFIT_AMOUNT.getMessageWith(totalBenefitAmount));
+    }
+
+    public static void printExpectedPaymentAmount(
+            int totalOriginPrice,
+            AppliedDiscountsResponse appliedDiscountsResponse
+    ) {
+        int expectedPaymentAmount = totalOriginPrice - appliedDiscountsResponse.totalBenefitAmount();
+        System.out.println(HeadingOfResult.EXPECTED_PAYMENT_AMOUNT.getMessage());
+        System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(expectedPaymentAmount));
     }
 
     private static void printMenuAndCount(String menuName, int count) {
