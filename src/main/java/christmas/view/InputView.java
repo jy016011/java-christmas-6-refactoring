@@ -16,4 +16,9 @@ public class InputView {
         );
         return Console.readLine();
     }
+
+    public static String requestOrder() {
+        System.out.println(RequestInputMessage.REQUEST_ORDER + WHITE_SPACE + InputForm.ORDER_EXAMPLE.getMessage());
+        return Console.readLine();
+    }
 }
