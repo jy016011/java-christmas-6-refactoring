@@ -33,6 +33,7 @@ public class ParseService {
         return orderDetailsInput;
     }
 
+    //subtract between count of Hyphen and count of comma is always 1, when input order by valid form.
     private static void validateFormat(String userInput) {
         int menuSeparatorCount = (int) userInput.chars()
                 .filter(c -> c == StringParser.toChar(MENU_SEPARATOR.getValue())).count();
@@ -51,25 +52,21 @@ public class ParseService {
 
     private static void recordMenuAndCount(Map<Menu, Integer> orderDetailsInput, String menuInput) {
         List<String> nameAndCount = StringParser.toTrimmedStringList(menuInput, NAME_AND_COUNT_SEPARATOR.getValue());
-        validateIsUsedNameAndCountSeparator(nameAndCount);
+        validateNameAndCount(nameAndCount);
         Menu menu = MenuBoard.getBy(nameAndCount.get(NAME_INDEX.getValue()));
         int count = toNumber(nameAndCount.get(COUNT_INDEX.getValue()));
         validateIsUnique(orderDetailsInput, menu);
         orderDetailsInput.put(menu, count);
     }
 
-    private static void validateIsUsedNameAndCountSeparator(List<String> nameAndCount) {
+    private static void validateNameAndCount(List<String> nameAndCount) {
         validateIsSeparated(nameAndCount.size());
-        validateNameAndCount(nameAndCount);
+        validateIsInMenu(nameAndCount.get(NAME_INDEX.getValue()));
+        validateIsInRange(nameAndCount.get(COUNT_INDEX.getValue()));
     }
 
     private static void validateIsSeparated(int size) {
         ArgumentValidator.isEqual(size, LIST_OF_NAME_AND_COUNT_SIZE.getValue());
-    }
-
-    private static void validateNameAndCount(List<String> nameAndCount) {
-        validateIsInMenu(nameAndCount.get(NAME_INDEX.getValue()));
-        validateIsInRange(nameAndCount.get(COUNT_INDEX.getValue()));
     }
 
     private static void validateIsUnique(Map<Menu, Integer> orderDetailsInput, Menu menu) {
