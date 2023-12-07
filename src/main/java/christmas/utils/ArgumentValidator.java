@@ -1,7 +1,5 @@
 package christmas.utils;
 
-import java.util.List;
-
 public class ArgumentValidator {
     private static final String ERROR_MESSAGE_HEADER = "[ERROR]";
 
@@ -24,13 +22,6 @@ public class ArgumentValidator {
     public static void isNotGreaterThan(int checkingNumber, int standardNumber) {
         if (checkingNumber > standardNumber) {
             raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " " + standardNumber + " 이하의 수를 입력하세요.");
-        }
-    }
-
-    public static void isUnique(List<Object> objects) {
-        boolean isDuplicated = objects.stream().distinct().count() != objects.size();
-        if (isDuplicated) {
-            raiseIllegalArgumentException(ERROR_MESSAGE_HEADER + " 중복이 있습니다.");
         }
     }
 

@@ -7,6 +7,7 @@ public interface OutputMessage {
     String GREETING = String.format("안녕하세요! 우테코 식당 %d월 이벤트 플래너입니다.", MONTH);
     String NO_BENEFIT = "없음";
     String NO_BENEFIT_AMOUNT = "0원";
+    String ERROR_HEADER = "[ERROR]";
 
 
     String getMessage();

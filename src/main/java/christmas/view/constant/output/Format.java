@@ -18,6 +18,6 @@ public enum Format implements OutputMessage {
     }
 
     public String getMessageWith(Object... objects) {
-        return String.format(message, objects);
+        return String.format(getMessage(), objects);
     }
 }

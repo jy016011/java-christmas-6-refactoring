@@ -11,6 +11,7 @@ import christmas.domain.dto.AppliedGiftsResponse;
 import christmas.domain.menu.Menu;
 import christmas.service.BenefitService;
 import christmas.service.ParseService;
+import christmas.view.ErrorView;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class EventPlanner {
                 int visitDay = ParseService.toNumber(userInput);
                 return new VisitingDate(visitDay);
             } catch (IllegalArgumentException e) {
-                System.out.println("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+                ErrorView.printInvalidDate();
             }
         }
     }
@@ -49,7 +50,7 @@ public class EventPlanner {
                 Map<Menu, Integer> orderInput = ParseService.toOrderMap(userInput);
                 return new Order(orderInput);
             } catch (IllegalArgumentException e) {
-                System.out.println("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+                ErrorView.printInvalidOrder();
             }
         }
     }
