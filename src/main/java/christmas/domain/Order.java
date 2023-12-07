@@ -24,6 +24,11 @@ public class Order {
         return calculateTotalOriginPrice() >= standardAmount;
     }
 
+    public boolean hasAnyMenuIn(Class<? extends Menu> category) {
+        return orderDetails.keySet().stream()
+                .anyMatch(menu -> menu.isSameCategory(category));
+    }
+
     public int calculateTotalOriginPrice() {
         return orderDetails.keySet().stream()
                 .mapToInt(menu -> menu.getPrice() * orderDetails.get(menu))

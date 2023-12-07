@@ -21,29 +21,26 @@ public enum DiscountPromotion implements Promotion {
     CHRISTMAS_D_DAY(
             "크리스마스 디데이 할인",
             UNTIL_CHRISTMAS::contains,
-            (visitingDate, order) -> MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
+            (visitingDate, order) -> true,
             (visitingDate, order) -> CHRISTMAS_D_DAY_BASE_AMOUNT.getValue()
                     + visitingDate.getDifferenceFromStartDay() * CHRISTMAS_D_DAY_ADDITIONAL_UNIT_AMOUNT.getValue()
     ),
     WEEKDAY(
             "평일 할인",
             DECEMBER::contains,
-            (visitingDate, order) -> visitingDate.isWeekday()
-                    && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
+            (visitingDate, order) -> visitingDate.isWeekday() && order.hasAnyMenuIn(Dessert.class),
             (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfMenuIn(Dessert.class)
     ),
     WEEKEND(
             "주말 할인",
             DECEMBER::contains,
-            (visitingDate, order) -> visitingDate.isWeekend()
-                    && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
+            (visitingDate, order) -> visitingDate.isWeekend() && order.hasAnyMenuIn(Main.class),
             (visitingDate, order) -> DAY_OF_WEEK_UNIT_AMOUNT.getValue() * order.getCountOfMenuIn(Main.class)
     ),
     SPECIAL_DAY(
             "특별 할인",
             DECEMBER::contains,
-            (visitingDate, order) -> SPECIAL_DAYS.contains(visitingDate)
-                    && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order),
+            (visitingDate, order) -> SPECIAL_DAYS.contains(visitingDate),
             (visitingDate, order) -> SPECIAL_BASE_AMOUNT.getValue()
     );
 
@@ -67,7 +64,9 @@ public enum DiscountPromotion implements Promotion {
 
     @Override
     public boolean isApplicable(VisitingDate visitingDate, Order order) {
-        return period.test(visitingDate) && condition.test(visitingDate, order);
+        return period.test(visitingDate)
+                && condition.test(visitingDate, order)
+                && MIN_AMOUNT_FOR_APPLICABLE.isApplicablePrice(order);
     }
 
     public int getAmount(VisitingDate visitingDate, Order order) {

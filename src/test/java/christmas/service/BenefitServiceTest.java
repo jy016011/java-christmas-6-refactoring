@@ -33,6 +33,12 @@ class BenefitServiceTest {
         order = new Order(orderDetails);
     }
 
+    private void setOrderWithOutGift() {
+        Map<Menu, Integer> orderDetails = new HashMap<>();
+        orderDetails.put(Main.T_BONE_STEAK, 1);
+        order = new Order(orderDetails);
+    }
+
     @DisplayName("12월 3일(평일, 별 있는 날), 티본스테이크 1개, 바비큐립 1개, 초코케이크 2개, 제로콜라 1개 주문시 할인혜택")
     @Test
     void getDiscountDetailsByExampleOnWeekday() {
@@ -76,6 +82,25 @@ class BenefitServiceTest {
         assertThat(discountContext.get(DiscountPromotion.CHRISTMAS_D_DAY.getName())).isEqualTo(1_100);
         assertThat(discountContext.get(DiscountPromotion.WEEKEND.getName())).isEqualTo(4_046);
         assertThat(appliedDiscounts.getTotalBenefitAmount()).isEqualTo(5_146);
+    }
+
+    @DisplayName("12월 3일(평일), 티본스테이크 1개 주문시 프로모션 혜택")
+    @Test
+    void getPromotionWithOutGift() {
+        visitingDate = new VisitingDate(3);
+        setOrderWithOutGift();
+        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
+        AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
+        Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
+        Map<String, Integer> giftDetails = appliedGifts.getGiftNameAndQuantity();
+        assertThat(discountContext).containsOnlyKeys(
+                DiscountPromotion.CHRISTMAS_D_DAY.getName(),
+                DiscountPromotion.SPECIAL_DAY.getName()
+        );
+        assertThat(giftDetails).isEmpty();
+        assertThat(discountContext.get(DiscountPromotion.CHRISTMAS_D_DAY.getName())).isEqualTo(1_200);
+        assertThat(discountContext.get(DiscountPromotion.SPECIAL_DAY.getName())).isEqualTo(1_000);
+        assertThat(appliedDiscounts.getTotalBenefitAmount()).isEqualTo(2_200);
     }
 
     @DisplayName("총 혜택 금액이 5천원 미만일이 배지는 없다")

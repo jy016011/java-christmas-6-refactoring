@@ -160,8 +160,10 @@ class OutputViewTest {
     @DisplayName("예상 결제 금액 출력")
     @Test
     void printExpectedPaymentAmount() {
+        int totalOriginPrice = 142_000;
         AppliedDiscountsResponse appliedDiscountsResponse = getAppliedDiscountsResponse();
-        OutputView.printExpectedPaymentAmount(142_000, appliedDiscountsResponse);
+        int expectedPaymentAmount = totalOriginPrice - appliedDiscountsResponse.totalBenefitAmount();
+        OutputView.printExpectedPaymentAmount(expectedPaymentAmount);
         assertThat(output()).contains(
                 "<할인 후 예상 결제 금액>",
                 "135,754원"
@@ -171,8 +173,10 @@ class OutputViewTest {
     @DisplayName("할인 없을 시 예상 결제 금액 출력")
     @Test
     void printExpectedPaymentAmountWithOutDiscount() {
+        int totalOriginPrice = 142_000;
         AppliedDiscountsResponse appliedDiscountsResponse = getEmptyDiscountResponse();
-        OutputView.printExpectedPaymentAmount(142_000, appliedDiscountsResponse);
+        int expectedPaymentAmount = totalOriginPrice - appliedDiscountsResponse.totalBenefitAmount();
+        OutputView.printExpectedPaymentAmount(expectedPaymentAmount);
         assertThat(output()).contains(
                 "<할인 후 예상 결제 금액>",
                 "142,000원"

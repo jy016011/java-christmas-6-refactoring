@@ -22,16 +22,19 @@ public class OutputView {
     }
 
     public static void printOrderDetails(Map<String, Integer> orderDetails) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.ORDERS.getMessage());
         orderDetails.forEach(OutputView::printMenuAndCount);
     }
 
     public static void printTotalOriginPrice(int totalOriginPrice) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.ORIGIN_TOTAL_PRICE.getMessage());
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(totalOriginPrice));
     }
 
     public static void printGiftDetails(AppliedGiftsResponse appliedGiftsResponse) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.GIFT_DETAIL.getMessage());
         if (appliedGiftsResponse.giftNameAndQuantity().isEmpty()) {
             printNothing();
@@ -44,6 +47,7 @@ public class OutputView {
             AppliedDiscountsResponse appliedDiscountsResponse,
             AppliedGiftsResponse appliedGiftsResponse
     ) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.BENEFIT_DETAIL.getMessage());
         if (
                 appliedDiscountsResponse.promotionNameAndBenefit().isEmpty() &&
@@ -60,6 +64,7 @@ public class OutputView {
             AppliedDiscountsResponse appliedDiscountsResponse,
             AppliedGiftsResponse appliedGiftsResponse
     ) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.TOTAL_BENEFIT.getMessage());
         int totalBenefitAmount =
                 appliedDiscountsResponse.totalBenefitAmount() + appliedGiftsResponse.totalBenefitAmount();
@@ -70,16 +75,14 @@ public class OutputView {
         System.out.println(Format.BENEFIT_AMOUNT.getMessageWith(totalBenefitAmount));
     }
 
-    public static void printExpectedPaymentAmount(
-            int totalOriginPrice,
-            AppliedDiscountsResponse appliedDiscountsResponse
-    ) {
-        int expectedPaymentAmount = totalOriginPrice - appliedDiscountsResponse.totalBenefitAmount();
+    public static void printExpectedPaymentAmount(int expectedPaymentAmount) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.EXPECTED_PAYMENT_AMOUNT.getMessage());
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(expectedPaymentAmount));
     }
 
     public static void printPromotionBadge(String badgeName) {
+        printLineSeparator();
         System.out.println(HeadingOfResult.BADGE.getMessage());
         System.out.println(badgeName);
     }
@@ -94,6 +97,9 @@ public class OutputView {
     }
 
     private static void printAppliedGifts(AppliedGiftsResponse appliedGiftsResponse) {
+        if (appliedGiftsResponse.totalBenefitAmount() == ZERO) {
+            return;
+        }
         printEachPromotion(appliedGiftsResponse.promotionName(), appliedGiftsResponse.totalBenefitAmount());
     }
 
