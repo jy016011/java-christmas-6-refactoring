@@ -8,7 +8,6 @@ import christmas.view.constant.output.OutputMessage;
 import java.util.Map;
 
 public class OutputView {
-    private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final int ZERO = 0;
 
     private OutputView() {
@@ -104,5 +103,9 @@ public class OutputView {
 
     private static void printNothing() {
         System.out.println(OutputMessage.NO_BENEFIT);
+    }
+
+    private static void printLineSeparator() {
+        System.out.println();
     }
 }
