@@ -76,6 +76,11 @@ public class OutputView {
         System.out.println(Format.PAYMENT_AMOUNT.getMessageWith(expectedPaymentAmount));
     }
 
+    public static void printPromotionBadge(String badgeName) {
+        System.out.println(HeadingOfResult.BADGE.getMessage());
+        System.out.println(badgeName);
+    }
+
     private static void printMenuAndCount(String menuName, int count) {
         System.out.println(Format.MENU_AND_COUNT.getMessageWith(menuName, count));
     }

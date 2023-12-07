@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import christmas.domain.AppliedDiscounts;
 import christmas.domain.AppliedGifts;
+import christmas.domain.badge.Badge;
 import christmas.domain.dto.AppliedDiscountsResponse;
 import christmas.domain.dto.AppliedGiftsResponse;
 import christmas.domain.promotion.DiscountPromotion;
@@ -165,6 +166,26 @@ class OutputViewTest {
         assertThat(output()).contains(
                 "<할인 후 예상 결제 금액>",
                 "142,000원"
+        );
+    }
+
+    @DisplayName("뱃지 출력")
+    @Test
+    void printBadge() {
+        OutputView.printPromotionBadge(Badge.STAR.getName());
+        assertThat(output()).contains(
+                "<12월 이벤트 배지>",
+                "별"
+        );
+    }
+
+    @DisplayName("뱃지 없음")
+    @Test
+    void printNoBadge() {
+        OutputView.printPromotionBadge(Badge.NONE.getName());
+        assertThat(output()).contains(
+                "<12월 이벤트 배지>",
+                "없음"
         );
     }
 
