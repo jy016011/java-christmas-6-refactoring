@@ -62,19 +62,11 @@ public class EventPlanner {
     }
 
     private static void applyPromotions(VisitingDate visitingDate, Order order) {
-        AppliedDiscounts appliedDiscounts = getAppliedDiscounts(visitingDate, order);
-        AppliedGifts appliedGifts = getAppliedGifts(visitingDate, order);
+        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
+        AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
         printAppliedPromotions(appliedDiscounts, appliedGifts);
         printExpectedPaymentAmount(order, appliedDiscounts);
         printBadge(appliedDiscounts, appliedGifts);
-    }
-
-    private static AppliedDiscounts getAppliedDiscounts(VisitingDate visitingDate, Order order) {
-        return BenefitService.getApplicableDiscounts(visitingDate, order);
-    }
-
-    private static AppliedGifts getAppliedGifts(VisitingDate visitingDate, Order order) {
-        return BenefitService.getApplicableGifts(visitingDate, order);
     }
 
     private static void printAppliedPromotions(AppliedDiscounts appliedDiscounts, AppliedGifts appliedGifts) {
