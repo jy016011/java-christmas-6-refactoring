@@ -22,12 +22,9 @@ public class EventPlanner {
 
     public static void run() {
         OutputView.printGreeting();
-
         VisitingDate visitingDate = getVisitingDate();
         Order order = getOrder();
-
         printUserInputs(visitingDate, order);
-
         applyPromotions(visitingDate, order);
     }
 
