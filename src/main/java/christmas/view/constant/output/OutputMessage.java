@@ -12,7 +12,7 @@ public interface OutputMessage {
 
     String getMessage();
 
-    static String getPreviewOfPromotionResult(int day) {
+    static String getDateWithPreview(int day) {
         return String.format("%d월 %d일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!", MONTH, day);
     }
 

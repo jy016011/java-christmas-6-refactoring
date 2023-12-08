@@ -18,7 +18,7 @@ public class OutputView {
     }
 
     public static void printDateWithPreview(int visitDay) {
-        System.out.println(OutputMessage.getPreviewOfPromotionResult(visitDay));
+        System.out.println(OutputMessage.getDateWithPreview(visitDay));
     }
 
     public static void printOrderDetails(Map<String, Integer> orderDetails) {

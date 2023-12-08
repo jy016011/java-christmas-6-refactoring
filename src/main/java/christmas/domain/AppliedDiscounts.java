@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-//key: discount name, value: benefit amount of discount
 public class AppliedDiscounts {
     private final Map<DiscountPromotion, Integer> discountPromotionAndBenefit;
 

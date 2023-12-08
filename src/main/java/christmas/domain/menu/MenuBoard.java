@@ -1,5 +1,7 @@
 package christmas.domain.menu;
 
+import static christmas.view.constant.output.ErrorMessage.NOT_IN_MENU;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +18,6 @@ public class MenuBoard {
 
     public static Menu getBy(String name) {
         return getAll().stream().filter(menu -> menu.isSameName(name)).findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new IllegalArgumentException(NOT_IN_MENU.getMessage()));
     }
 }

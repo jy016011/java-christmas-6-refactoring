@@ -19,7 +19,7 @@ public class BenefitService {
     private BenefitService() {
     }
 
-    public static AppliedDiscounts getApplicableDiscounts(VisitingDate visitingDate, Order order) {
+    public static AppliedDiscounts getAppliedDiscounts(VisitingDate visitingDate, Order order) {
         List<Promotion> discountPromotions = findApplicableDiscountPromotions(visitingDate, order);
         Map<DiscountPromotion, Integer> discountDetails = new LinkedHashMap<>();
         discountPromotions.stream()
@@ -32,7 +32,7 @@ public class BenefitService {
         return new AppliedDiscounts(discountDetails);
     }
 
-    public static AppliedGifts getApplicableGifts(VisitingDate visitingDate, Order order) {
+    public static AppliedGifts getAppliedGifts(VisitingDate visitingDate, Order order) {
         List<Promotion> giftPromotions = findApplicableGiftPromotions(visitingDate, order);
         Map<Gift, Integer> giftDetails = new LinkedHashMap<>();
         giftPromotions.stream()

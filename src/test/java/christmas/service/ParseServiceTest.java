@@ -64,5 +64,4 @@ class ParseServiceTest {
         assertThatThrownBy(() -> ParseService.toOrderMap(input))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
 }

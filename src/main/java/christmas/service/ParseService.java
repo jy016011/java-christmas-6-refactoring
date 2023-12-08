@@ -3,9 +3,9 @@ package christmas.service;
 import static christmas.domain.constraint.OrderConstraint.MAX_COUNT_OF_TOTAL_MENU;
 import static christmas.domain.constraint.OrderConstraint.MIN_COUNT_OF_EACH_MENU;
 import static christmas.service.constraint.DataStructureConstraint.COUNT_INDEX;
-import static christmas.service.constraint.DataStructureConstraint.DIFFERENCE_BETWEEN_SEPARATORS;
-import static christmas.service.constraint.DataStructureConstraint.LIST_OF_NAME_AND_COUNT_SIZE;
+import static christmas.service.constraint.DataStructureConstraint.DIFFERENCE_BETWEEN_SEPARATOR_COUNTS;
 import static christmas.service.constraint.DataStructureConstraint.NAME_INDEX;
+import static christmas.service.constraint.DataStructureConstraint.SIZE_OF_NAME_AND_COUNT_LIST;
 import static christmas.service.constraint.OrderInputConstraint.MENU_SEPARATOR;
 import static christmas.service.constraint.OrderInputConstraint.NAME_AND_COUNT_SEPARATOR;
 
@@ -41,7 +41,7 @@ public class ParseService {
                 .filter(c -> c == StringParser.toChar(NAME_AND_COUNT_SEPARATOR.getValue())).count();
         ArgumentValidator.isEqual(
                 nameAndCountSeparatorCount - menuSeparatorCount,
-                DIFFERENCE_BETWEEN_SEPARATORS.getValue()
+                DIFFERENCE_BETWEEN_SEPARATOR_COUNTS.getValue()
         );
     }
 
@@ -66,7 +66,7 @@ public class ParseService {
     }
 
     private static void validateIsSeparated(int size) {
-        ArgumentValidator.isEqual(size, LIST_OF_NAME_AND_COUNT_SIZE.getValue());
+        ArgumentValidator.isEqual(size, SIZE_OF_NAME_AND_COUNT_LIST.getValue());
     }
 
     private static void validateIsUnique(Map<Menu, Integer> orderDetailsInput, Menu menu) {

@@ -5,7 +5,6 @@ import christmas.domain.promotion.Promotion;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-//key: gift, value: amount of benefit
 public class AppliedGifts {
     private final Map<Gift, Integer> giftAndAmount;
 
@@ -22,7 +21,7 @@ public class AppliedGifts {
     }
 
     public String getPromotionName() {
-        return Promotion.giftPromotionName;
+        return Promotion.GIFT_PROMOTION_NAME;
     }
 
     public int getTotalBenefitAmount() {

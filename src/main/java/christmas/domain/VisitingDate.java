@@ -1,15 +1,15 @@
 package christmas.domain;
 
-import christmas.domain.constraint.DateConstraint;
+import static christmas.domain.constraint.DateConstraint.DAY_OF_LAST;
+import static christmas.domain.constraint.DateConstraint.DAY_OF_START;
+import static christmas.domain.constraint.DateConstraint.PROMOTION_MONTH;
+import static christmas.domain.constraint.DateConstraint.PROMOTION_YEAR;
+
 import christmas.utils.ArgumentValidator;
 import java.time.LocalDate;
 import java.util.List;
 
 public class VisitingDate {
-    private static final int PROMOTION_YEAR = DateConstraint.PROMOTION_YEAR.getValue();
-    private static final int PROMOTION_MONTH = DateConstraint.PROMOTION_MONTH.getValue();
-    private static final int START_DAY = DateConstraint.DAY_OF_START.getValue();
-    private static final int LAST_DAY = DateConstraint.DAY_OF_LAST.getValue();
     private static final int FRIDAY_VALUE = 5;
     private static final int SATURDAY_VALUE = 6;
 
@@ -17,7 +17,7 @@ public class VisitingDate {
 
     public VisitingDate(int day) {
         validate(day);
-        visitDay = LocalDate.of(PROMOTION_YEAR, PROMOTION_MONTH, day);
+        visitDay = LocalDate.of(PROMOTION_YEAR.getValue(), PROMOTION_MONTH.getValue(), day);
     }
 
     public boolean isContainedIn(LocalDate startDayInclusive, LocalDate lastDayInclusive) {
@@ -29,7 +29,7 @@ public class VisitingDate {
     }
 
     public int getDifferenceFromStartDay() {
-        return visitDay.getDayOfMonth() - START_DAY;
+        return visitDay.getDayOfMonth() - DAY_OF_START.getValue();
     }
 
     public boolean isWeekend() {
@@ -42,7 +42,7 @@ public class VisitingDate {
     }
 
     private void validate(int day) {
-        ArgumentValidator.isNotLessThan(day, START_DAY);
-        ArgumentValidator.isNotGreaterThan(day, LAST_DAY);
+        ArgumentValidator.isNotLessThan(day, DAY_OF_START.getValue());
+        ArgumentValidator.isNotGreaterThan(day, DAY_OF_LAST.getValue());
     }
 }

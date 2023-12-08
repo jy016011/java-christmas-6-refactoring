@@ -1,8 +1,8 @@
 package christmas.service.constraint;
 
 public enum DataStructureConstraint implements ParsingConstraint<Integer> {
-    DIFFERENCE_BETWEEN_SEPARATORS(1),
-    LIST_OF_NAME_AND_COUNT_SIZE(2),
+    DIFFERENCE_BETWEEN_SEPARATOR_COUNTS(1),
+    SIZE_OF_NAME_AND_COUNT_LIST(2),
     NAME_INDEX(0),
     COUNT_INDEX(1);
 

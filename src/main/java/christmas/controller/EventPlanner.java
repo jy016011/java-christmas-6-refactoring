@@ -56,14 +56,13 @@ public class EventPlanner {
         OutputView.printDateWithPreview(
                 visitingDate.getDifferenceFromStartDay() + DateConstraint.DAY_OF_START.getValue()
         );
-
         OutputView.printOrderDetails(order.getOrderDetails());
         OutputView.printTotalOriginPrice(order.calculateTotalOriginPrice());
     }
 
     private static void applyPromotions(VisitingDate visitingDate, Order order) {
-        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
+        AppliedDiscounts appliedDiscounts = BenefitService.getAppliedDiscounts(visitingDate, order);
+        AppliedGifts appliedGifts = BenefitService.getAppliedGifts(visitingDate, order);
         printAppliedPromotions(appliedDiscounts, appliedGifts);
         printExpectedPaymentAmount(order, appliedDiscounts);
         printBadge(appliedDiscounts, appliedGifts);

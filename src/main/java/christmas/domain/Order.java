@@ -1,9 +1,12 @@
 package christmas.domain;
 
+import static christmas.view.constant.output.ErrorMessage.ONLY_DRINK;
+
 import christmas.domain.constraint.OrderConstraint;
 import christmas.domain.menu.Drink;
 import christmas.domain.menu.Menu;
 import christmas.utils.ArgumentValidator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -46,13 +49,15 @@ public class Order {
         return orderDetails.entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> entry.getKey().getName(),
-                        Entry::getValue
+                        Entry::getValue,
+                        (oldValue, newValue) -> newValue,
+                        LinkedHashMap::new
                 ));
     }
 
     private void validateHasOnlyDrinks(Set<Menu> menus) {
         boolean hasOnlyDrinks = menus.stream().allMatch(menu -> menu.isSameCategory(Drink.class));
-        ArgumentValidator.throwIllegalArgumentExceptionBy(hasOnlyDrinks, "음료만 주문할 수 없습니다.");
+        ArgumentValidator.throwIllegalArgumentExceptionBy(hasOnlyDrinks, ONLY_DRINK.getMessage());
     }
 
     private void validateTotalCounts(List<Integer> menuCounts) {

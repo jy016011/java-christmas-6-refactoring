@@ -1,6 +1,7 @@
 package christmas.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import christmas.domain.AppliedDiscounts;
 import christmas.domain.AppliedGifts;
@@ -44,7 +45,7 @@ class BenefitServiceTest {
     void getDiscountDetailsByExampleOnWeekday() {
         visitingDate = new VisitingDate(3);
         setOrder();
-        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
+        AppliedDiscounts appliedDiscounts = BenefitService.getAppliedDiscounts(visitingDate, order);
         Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
@@ -62,7 +63,7 @@ class BenefitServiceTest {
     void getGiftDetailsByExampleOnWeekday() {
         visitingDate = new VisitingDate(3);
         setOrder();
-        AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
+        AppliedGifts appliedGifts = BenefitService.getAppliedGifts(visitingDate, order);
         Map<String, Integer> giftDetails = appliedGifts.getGiftNameAndQuantity();
         assertThat(giftDetails).containsOnlyKeys(Gift.CHAMPAGNE.getMenu().getName());
         assertThat(appliedGifts.getTotalBenefitAmount()).isEqualTo(25_000);
@@ -73,7 +74,7 @@ class BenefitServiceTest {
     void getDiscountDetailsByExampleOnWeekend() {
         visitingDate = new VisitingDate(2);
         setOrder();
-        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
+        AppliedDiscounts appliedDiscounts = BenefitService.getAppliedDiscounts(visitingDate, order);
         Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
         assertThat(discountContext).containsOnlyKeys(
                 DiscountPromotion.CHRISTMAS_D_DAY.getName(),
@@ -89,8 +90,8 @@ class BenefitServiceTest {
     void getPromotionWithOutGift() {
         visitingDate = new VisitingDate(3);
         setOrderWithOutGift();
-        AppliedDiscounts appliedDiscounts = BenefitService.getApplicableDiscounts(visitingDate, order);
-        AppliedGifts appliedGifts = BenefitService.getApplicableGifts(visitingDate, order);
+        AppliedDiscounts appliedDiscounts = BenefitService.getAppliedDiscounts(visitingDate, order);
+        AppliedGifts appliedGifts = BenefitService.getAppliedGifts(visitingDate, order);
         Map<String, Integer> discountContext = appliedDiscounts.getPromotionNameAndBenefit();
         Map<String, Integer> giftDetails = appliedGifts.getGiftNameAndQuantity();
         assertThat(discountContext).containsOnlyKeys(
@@ -103,24 +104,39 @@ class BenefitServiceTest {
         assertThat(appliedDiscounts.getTotalBenefitAmount()).isEqualTo(2_200);
     }
 
-    @DisplayName("총 혜택 금액이 5천원 미만일이 배지는 없다")
+    @DisplayName("총 혜택 금액이 5천원 미만이면 배지는 없다")
     @Test
     void getNoneBadge() {
         int totalBenefitAmount = 4_999;
         assertThat(BenefitService.getBadgeBy(totalBenefitAmount)).isEqualTo(Badge.NONE);
     }
 
-    @DisplayName("총 혜택 금액이 5천원이상 1만원 미만일시 배지는 별")
+    @DisplayName("총 혜택 금액이 5천원이상 1만원 미만이면 배지는 별")
     @ValueSource(ints = {5_000, 9_999})
     @ParameterizedTest
     void getStarBadge(int totalBenefitAmount) {
         assertThat(BenefitService.getBadgeBy(totalBenefitAmount)).isEqualTo(Badge.STAR);
     }
 
-    @DisplayName("총 혜택 금액이 1만원이상 2만원 미만일시 배지는 트리")
+    @DisplayName("총 혜택 금액이 1만원이상 2만원 미만이면 배지는 트리")
     @ValueSource(ints = {10_000, 19_999})
     @ParameterizedTest
     void getTreeBadge(int totalBenefitAmount) {
         assertThat(BenefitService.getBadgeBy(totalBenefitAmount)).isEqualTo(Badge.TREE);
+    }
+
+    @DisplayName("총 혜택 금액이 2만원 이상이면 배지는 산타")
+    @ValueSource(ints = {20_000})
+    @ParameterizedTest
+    void getSantaBadge(int totalBenefitAmount) {
+        assertThat(BenefitService.getBadgeBy(totalBenefitAmount)).isEqualTo(Badge.SANTA);
+    }
+
+    @DisplayName("총 혜택 금액이 0 미만이면 예외 발생")
+    @ValueSource(ints = {-1, -20_000})
+    @ParameterizedTest
+    void getBadgeByInvalidAmount(int totalBenefitAmount) {
+        assertThatThrownBy(() -> BenefitService.getBadgeBy(totalBenefitAmount))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }

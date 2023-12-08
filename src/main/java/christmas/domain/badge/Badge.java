@@ -1,5 +1,7 @@
 package christmas.domain.badge;
 
+import static christmas.view.constant.output.ErrorMessage.INVALID_BENEFIT_AMOUNT;
+
 import christmas.view.constant.output.OutputMessage;
 import java.util.Arrays;
 
@@ -21,8 +23,7 @@ public enum Badge {
         return Arrays.stream(values())
                 .filter(badge -> benefitAmount >= badge.lowerBoundInclusive)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("[ERROR] 유효하지 않은 총혜택 금액입니다."));
-
+                .orElseThrow(() -> new IllegalArgumentException(INVALID_BENEFIT_AMOUNT.getMessage()));
     }
 
     public String getName() {
